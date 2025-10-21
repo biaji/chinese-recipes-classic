@@ -7,15 +7,13 @@ fi
 
 for dir in */; do
     dirname="${dir%/}"
-    echo $dirname
-    cd $dirname
-    md_files=(*.md)
-    echo $md_files
+    md_files=("$dir"*.md)
 
     if [ -e "${md_files[0]}" ]; then
-        pandoc "${md_files[0]}" -o "../${dirname}.epub" \
+        pandoc "${md_files[0]}" -o "${dirname}.epub" \
+            --resource-path="$dir" \
             --metadata title="$dirname" \
+            --embed-resources \
             --toc
     fi
-    cd ..
 done
